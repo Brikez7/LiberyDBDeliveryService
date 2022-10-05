@@ -22,7 +22,10 @@ namespace TestsDeliveryServiceLibery.TestOptions.Connection
 
         protected override string CreatePathConnectionDatabase()
         {
-            return "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\Предметы\\С#\\КПиЯП\\Project\\LiberyDBDeliveryService\\Tests\\bin\\Debug\\net6.0\\DeliveryService.mdf;Integrated Security=True;Connect Timeout=30";
+            string startPathConnection = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=";
+            string endPathConnection = "\\DeliveryService.mdf;Integrated Security=True;Initial Catalog=EfGetStarted1;Connect Timeout=30";
+            string pathToTest = Directory.GetCurrentDirectory();
+            return startPathConnection + pathToTest + endPathConnection;
         }
     }
 }

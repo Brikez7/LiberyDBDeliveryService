@@ -6,7 +6,6 @@ namespace LiberyDBDeliveryService.Models.DB.Table
 {
     public partial class WorkShift
     {
-        [Key]
         public long? IdWorkShift { get; set; } 
         public long IdTelegramEmploye { get; set; }
         public DateTime Date { get; set; }

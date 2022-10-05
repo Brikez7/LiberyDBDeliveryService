@@ -20,23 +20,23 @@ namespace TestsDeliveryServiceLibery.Tests
         }
 
         [Theory]
-        [InlineData("Dima", 1, 1, "Brykez7", true)]
-        [InlineData("Egor", 11, 2, "Joycasino", true)]
-        [InlineData("Vlad", 21, 3, "DotNeter", true)]
-        public void TestsAdd(string name, long idTelegram, short post, string loginTelegram, bool life)
+        [InlineData("Dima", 1, 1, "Brykez7", true,true)]
+        [InlineData("Egor", 11, 2, "Joycasino", true, true)]
+        [InlineData("Vlad", 21, 3, "DotNeter", true, true)]
+        public void TestsAdd(string name, long idTelegram, short post, string loginTelegram, bool life, bool work)
         {
-            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life);
+            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, work);
 
             AddAccountsFromDatabase(newAccounts);
 
             CheckAddAccounts(newAccounts);
         }
-        private List<Account> CreateAccounts(string name, long idTelegram, short post, string loginTelegram, bool life, int Count = 5)
+        private List<Account> CreateAccounts(string name, long idTelegram, short post, string loginTelegram, bool life,bool work, int Count = 5)
         {
             List<Account> accounts = new List<Account>();
             for (int i = 0; i < Count; i++)
             {
-                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, life);
+                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, life, work);
                 accounts.Add(newAccont);
             }
             return accounts;
@@ -60,14 +60,13 @@ namespace TestsDeliveryServiceLibery.Tests
                 Assert.Equal(accounts[i], addAccounts[i]);
             }
         }
-
         [Theory]
-        [InlineData("Dima", 1, 1, "Brykez7", true)]
-        [InlineData("Egor", 11, 2, "Joycasino", true)]
-        [InlineData("Vlad", 21, 3, "DotNeter", true)]
-        public void TestUpdateLifeByIdAccaount(string name, long idTelegram, short post, string loginTelegram, bool life)
+        [InlineData("Dima", 1, 1, "Brykez7", true, true)]
+        [InlineData("Egor", 11, 2, "Joycasino", true, true)]
+        [InlineData("Vlad", 21, 3, "DotNeter", true, true)]
+        public void TestUpdateLifeByIdAccaount(string name, long idTelegram, short post, string loginTelegram, bool life, bool work)
         {
-            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life);
+            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, work);
             AddAccounts(newAccounts);
 
             Account randomAccount = RandomAccount(newAccounts);
@@ -99,12 +98,12 @@ namespace TestsDeliveryServiceLibery.Tests
         }
 
         [Theory]
-        [InlineData("Dima", 1, 1, "Brykez7", true)]
-        [InlineData("Egor", 11, 2, "Joycasino", true)]
-        [InlineData("Vlad", 21, 3, "DotNeter", true)]
-        public void TestGetAccounts(string name, long idTelegram, short post, string loginTelegram, bool life)
+        [InlineData("Dima", 1, 1, "Brykez7", true,true)]
+        [InlineData("Egor", 11, 2, "Joycasino", true, true)]
+        [InlineData("Vlad", 21, 3, "DotNeter", true, true)]
+        public void TestGetAccounts(string name, long idTelegram, short post, string loginTelegram, bool life,bool work)
         {
-            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life);
+            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, work);
 
             AddAccounts(newAccounts);
 
@@ -114,12 +113,12 @@ namespace TestsDeliveryServiceLibery.Tests
         }
 
         [Theory]
-        [InlineData("Dima", 1, 1, "Brykez7", true, 10)]
-        [InlineData("Egor", 11, 2, "Joycasino", true, 30)]
-        [InlineData("Vlad", 21, 3, "DotNeter", true, 20)]
-        public void TestGetAccountByIdTelegramAndPost(string name, long idTelegram, short post, string loginTelegram, bool life, int count)
+        [InlineData("Dima", 1, 1, "Brykez7", true,true, 10)]
+        [InlineData("Egor", 11, 2, "Joycasino", true, true, 30)]
+        [InlineData("Vlad", 21, 3, "DotNeter", true, true, 20)]
+        public void TestGetAccountByIdTelegramAndPost(string name, long idTelegram, short post, string loginTelegram, bool life,bool work, int count)
         {
-            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, count);
+            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, work, count);
             AddAccounts(newAccounts);
 
             Account changeAccount = RandomAccount(count, newAccounts);
@@ -128,12 +127,12 @@ namespace TestsDeliveryServiceLibery.Tests
         }
 
         [Theory]
-        [InlineData("Dima", 1, 1, "Brykez7", true, 10)]
-        [InlineData("Egor", 11, 2, "Joycasino", true, 30)]
-        [InlineData("Vlad", 21, 3, "DotNeter", true, 20)]
-        public void TestCheckAccountExistByIdTelegram(string name, long idTelegram, short post, string loginTelegram, bool life, int count)
+        [InlineData("Dima", 1, 1, "Brykez7", true, true, 10)]
+        [InlineData("Egor", 11, 2, "Joycasino", true, true, 30)]
+        [InlineData("Vlad", 21, 3, "DotNeter", true, true, 20)]
+        public void TestCheckAccountExistByIdTelegram(string name, long idTelegram, short post, string loginTelegram, bool life,bool work, int count)
         {
-            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life, count);
+            List<Account> newAccounts = CreateAccounts(name, idTelegram, post, loginTelegram, life,work ,count);
             AddAccounts(newAccounts);
 
             Account changeAccount = RandomAccount(count, newAccounts);
@@ -173,10 +172,15 @@ namespace TestsDeliveryServiceLibery.Tests
             List<Account> accounts = new List<Account>();
             for (int i = 0; i < Count; i++)
             {
-                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, new Random().Next(0,10)>5);
+                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, RandomBool(), RandomBool());
                 accounts.Add(newAccont);
             }
             return accounts;
+        }
+
+        private static bool RandomBool()
+        {
+            return new Random().Next(0, 10) > 5;
         }
 
         [Theory]

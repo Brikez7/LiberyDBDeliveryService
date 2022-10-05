@@ -12,6 +12,8 @@ namespace LiberyDBDeliveryService.Models.DB.Context
         }
         public DeliveryServiceContext()
         {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
         public DeliveryServiceContext(DbContextOptions<DeliveryServiceContext> options)
             : base(options)
@@ -28,7 +30,7 @@ namespace LiberyDBDeliveryService.Models.DB.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-               optionsBuilder.UseSqlServer(_connection.GetPathConnection());
+                optionsBuilder.UseSqlServer(_connection.GetPathConnection());
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,24 +41,32 @@ namespace LiberyDBDeliveryService.Models.DB.Context
 
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.IdTelegram, "KEY_Account_idTelegram")
-                    .IsUnique();
+                entity.Property(e => e.IdTelegram)
+                    .HasColumnType("bigint")
+                    .HasColumnName("idTelegram");
 
-                entity.Property(e => e.IdTelegram).HasColumnName("idTelegram");
-
-                entity.Property(e => e.Post).HasColumnName("post");
+                entity.Property(e => e.Post)
+                .HasColumnType("smallint")
+                .HasColumnName("post");
 
                 entity.Property(e => e.Name)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(50)
                     .HasColumnName("name")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.Life).HasColumnName("life");
+                entity.Property(e => e.Life)
+                    .HasColumnType("bit")
+                    .HasColumnName("life");
 
                 entity.Property(e => e.LoginTelegram)
                     .HasMaxLength(50)
                     .HasColumnName("loginTelegram")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+                entity.Property(e => e.WorkNow)
+                    .HasColumnType("bit")
+                    .HasColumnName("workNow");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -66,68 +76,93 @@ namespace LiberyDBDeliveryService.Models.DB.Context
 
                 entity.ToTable("Order");
 
-                entity.Property(e => e.IdOrder).HasColumnName("idOrder");
+                entity.Property(e => e.IdOrder)
+                    .HasColumnType("bigint")
+                    .HasColumnName("idOrder");
 
                 entity.Property(e => e.AddresClient)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(100)
                     .HasColumnName("addresClient")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.AddresWarehouse)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(100)
                     .HasColumnName("addresWarehouse")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.DateOrder)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(50)
                     .HasColumnName("dateOrder")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.DeliveryTime)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(30)
                     .HasColumnName("deliveryTime")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.Deposit).HasColumnName("deposit");
+                entity.Property(e => e.Deposit)
+                    .HasColumnType("float")
+                    .HasColumnName("deposit");
 
                 entity.Property(e => e.Describe)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(100)
                     .HasColumnName("describe")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.FenceTime)
-                    .HasMaxLength(30)
+                    .HasColumnType("nvarchar")
+                    .HasMaxLength(50)
                     .HasColumnName("fenceTime")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.IdTelegramDeliver).HasColumnName("idTelegramDeliver");
+                entity.Property(e => e.IdTelegramDeliver)
+                    .HasColumnType("bigint")
+                    .HasColumnName("idTelegramDeliver");
 
-                entity.Property(e => e.IdTelegramShop).HasColumnName("idTelegramShop");
+                entity.Property(e => e.IdTelegramShop)
+                    .HasColumnType("bigint")
+                    .HasColumnName("idTelegramShop");
 
                 entity.Property(e => e.PhoneClient)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(40)
                     .HasColumnName("phoneClient")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.PhoneSenders)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(30)
                     .HasColumnName("phoneSenders")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.Price).HasColumnName("price");
+                entity.Property(e => e.Price)
+                    .HasColumnType("float")
+                    .HasColumnName("price");
 
                 entity.Property(e => e.Product)
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar")
                     .HasColumnName("product")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.StatusOrder).HasColumnName("statusOrder");
+                entity.Property(e => e.StatusOrder)
+                    .HasColumnType("smallint")
+                    .HasColumnName("statusOrder");
 
                 entity.Property(e => e.TypeMovement)
+                    .HasColumnType("nvarchar")
                     .HasMaxLength(30)
                     .HasColumnName("typeMovement")
                     .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                entity.Property(e => e.Weight).HasColumnName("weight");
+                entity.Property(e => e.Weight)
+                    .HasColumnType("float")
+                    .HasColumnName("weight");
 
                 entity.HasOne(d => d.IdTelegramDeliverNavigation)
                     .WithMany(p => p.OrderIdTelegramDeliverNavigations)
@@ -147,6 +182,9 @@ namespace LiberyDBDeliveryService.Models.DB.Context
             {
                 entity.ToTable("WorkShift");
 
+                entity.HasKey(e => e.IdWorkShift)
+                    .HasName("PK_WorkShift_Id");
+
                 entity.HasIndex(e => e.IdWorkShift, "PK_WorkShift")
                     .IsClustered();
 
@@ -155,10 +193,12 @@ namespace LiberyDBDeliveryService.Models.DB.Context
                     .HasColumnName("date");
 
                 entity.Property(e => e.IdTelegramEmploye)
-                .HasColumnName("idTelegramEmploye");
+                    .HasColumnType("bigint")
+                    .HasColumnName("idTelegramEmploye");
 
                 entity.Property(e => e.Status)
-                .HasColumnName("status");
+                    .HasColumnType("bit")
+                    .HasColumnName("status");
 
                 entity.HasOne(d => d.IdTelegramEmployeNavigation)
                     .WithMany()

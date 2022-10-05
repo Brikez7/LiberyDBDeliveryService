@@ -11,24 +11,7 @@ namespace LiberyDBDeliveryService.Models.DB.Table
         public short Post { get; set; }
         public string LoginTelegram { get; set; } = null!;
         public bool Life { get; set; }
-        public Account()
-        {
-            OrderIdTelegramDeliverNavigations = new HashSet<Order>();
-            OrderIdTelegramShopNavigations = new HashSet<Order>();
-        }
-        public Account(string name, long idTelegram, short post, string loginTelegram, bool life)
-        {
-            Name = name;
-            IdTelegram = idTelegram;
-            Post = post;
-            LoginTelegram = loginTelegram;
-            Life = life;
-        }
-
-        public Account(string name, long idTelegram, short post, string loginTelegram) : this(name, idTelegram, post)
-        {
-            LoginTelegram = loginTelegram;
-        }
+        public bool WorkNow { get; set; }
 
         public Account(string name, long idTelegram, short post)
         {
@@ -37,11 +20,13 @@ namespace LiberyDBDeliveryService.Models.DB.Table
             Post = post;
         }
 
-        public Account(long idTelegram, short post)
+        public Account(string name, long idTelegram, short post, string loginTelegram, bool life, bool work) : this(name, idTelegram, post)
         {
-            IdTelegram = idTelegram;
-            Post = post;
+            LoginTelegram = loginTelegram;
+            Life = life;
+            WorkNow = work;
         }
+
         public override bool Equals(object obj)
         {
             if ((obj == null) || !GetType().Equals(obj.GetType()))
@@ -55,7 +40,8 @@ namespace LiberyDBDeliveryService.Models.DB.Table
                        (IdTelegram == p.IdTelegram) &&
                        (Name == p.Name) &&
                        (LoginTelegram == p.LoginTelegram) &&
-                       (Life == p.Life);
+                       (Life == p.Life) &&
+                       (WorkNow == p.WorkNow);
             }
         }
         public virtual ICollection<Order> OrderIdTelegramDeliverNavigations { get; set; } 

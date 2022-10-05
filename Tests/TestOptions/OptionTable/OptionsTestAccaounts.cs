@@ -33,7 +33,7 @@ namespace TestsDeliveryServiceLibery.TestOptions.OptionForTests
             List<Account> accounts = new List<Account>();
             for (int i = 0; i < Count; i++)
             {
-                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, new Random().Next(0, 10) > 5);
+                Account newAccont = new Account($"{name}{i}", idTelegram + i, (short)(i % 4), loginTelegram + i, new Random().Next(0, 10) > 5, new Random().Next(0, 10) > 5);
                 accounts.Add(newAccont);
             }
             return accounts;
